@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
-import com.example.demo.dao.ProductRepository;
 import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductsController {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductService productService;
 
     @GetMapping("/products")
     public String index(Model model) {
-        model.addAttribute("allProducts", repository.getProducts());
+        model.addAttribute("allProducts", productService.getProducts());
         model.addAttribute("productInfo", new Product());
         return "startPage";
     }
@@ -22,20 +22,20 @@ public class ProductsController {
 
     @PostMapping("/products")
     public String addNewProduct(@ModelAttribute("productInfo") Product product) {
-        repository.addProduct(product);
+        productService.saveProduct(product);
         return "redirect:/products";
     }
 
     @GetMapping("/products/{id}")
     @ResponseBody
     public String showInfo(@PathVariable int id) {
-        Product product = repository.getProduct(id);
-        return product.toString();
+      Product product = (Product) productService.findById(id);
+      return "productInfo";
     }
 
-    @PostMapping("/products/pro")
-    @ResponseBody
-    public void addNewProduct1(@RequestBody Product product) {
-        System.out.println(product.toString());
-    }
+//    @DeleteMapping("/products/{id}")
+//    public String deleteProduct(@PathVariable int id) {
+//        productService.deleteById(id);
+//        return "redirect:/products";
+//    }
 }

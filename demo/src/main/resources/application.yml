@@ -2,3 +2,15 @@ server:
   port: 8180
   servlet:
     context-path: /app
+
+spring:
+  jpa:
+    show-sql: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/Products
+    username: bestuser
+    password: Password123!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
